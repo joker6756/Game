@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<title>Dot Graphics</title>
+
+</head>
+<body>
+<style>
+* {
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+box-sizing: border-box;
+user-select: none;
+-webkit-user-drag: none;/**/
+}
+.ico {
+    position: fixed;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    height: 4vmax;
+    width: 4vmax;
+    overflow: hidden;
+    max-width: 1.1cm;
+    max-height: 1.1cm;
+    min-height: .6cm;
+    min-width: .6cm;
+    padding: .4vmax;
+    margin: .2cm;
+    transition: all 0.3s ease-out;
+    border-radius: 4px;
+    z-index: 9;
+}
+.ico:hover {
+    background-color: rgba(58, 59, 65, 0.293);
+    transition: none;
+}
+.ico img {
+    position: relative;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+}
+html,body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    background-color: lightgrey;
+}
+table {
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    padding: 0px;
+    margin: 10vmin 12vmax;
+    background-color: white;
+}
+body:hover td {
+    will-change: background-color;
+}
+
+
+td {
+    border: 0.1vmin solid;
+    border-color: currentColor;
+    font-size: 5vmax;
+    text-align: center;
+    transition: background-color .3s ease-in;
+    font-weight: bolder;
+    font-family: system-ui;
+}
+td:active {
+    background-color: rgba(0,0,0,0.15);
+    transition: background-color .3s ease-in -.2s;
+}
+.inline {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.round {
+height: 6px;
+width: 6px;
+background-color: #2196f3;
+padding: 8px 8px;
+margin: 1px 1px;
+border-radius: 50%;
+will-change: margin;
+animation: ra 1s ease-out infinite;
+}
+#main_content {
+    will-change: transform;
+    z-index: 999;
+    animation: rp 1s linear infinite;
+}
+.gr {
+background-color: #4caf50;
+}
+
+.centre {
+    border: 1vmin solid currentColor;
+    border-radius: 50%;
+}
+.rc {
+    will-change: height,width,transform;
+    filter: blur(10px);
+}
+.ldr {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    will-change: opacity;
+    transition: opacity 0.4s ease;
+    background-color: rgba(0,0,0,0.6);
+    margin: 0;
+    pointer-events: all;
+}
+@keyframes cp {
+    0%{transform: translate(-50%,-50%) rotate(0deg);}
+    100%{transform: translate(-50%,-50%) rotate(360deg);}
+}
+.ldr_ {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: white;
+    will-change: transform;
+    animation: cp 0.7s linear infinite;
+}
+.ldr:not(.hid) {
+    transition: none !important;
+    pointer-events: all !important;
+}
+.ldr.hid {
+    opacity: 0;
+    pointer-events: none;
+}
+.menu_outer {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    will-change: opacity;
+    animation: opn 0.3s ease-out;
+}
+@keyframes opn {
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
+@keyframes cls {
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+}
+.menu_outer:not(.op) {
+    opacity: 0;
+    pointer-events: none !important;
+    animation: cls 0.3s ease-out;
+}
+.menu {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    height: 70%;
+    width: 70%;
+    will-change: transform;
+    transform: translate(-50%,-50%);
+    background-color: rgb(225 225 225);
+    border-radius: 5px;
+    font-size: larger;
+    font-weight: bolder;
+    overflow-y: scroll;
+    min-height: 6cm;
+    min-width: 7cm;
+    max-height: 95%;
+    max-width: 95%;
+}
+
+ul {
+    padding: 0 !important;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+ul:last-child {
+    margin-bottom: 10px;
+}
+li {
+    margin: 5px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+li a {
+    display: block;
+    transition: all 0.3s ease-in;
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+}
+li a:active {
+    background-color: rgba(0, 0, 0, 0.15);
+    transition: background-color .3s ease-in -.2s;
+}
+.ttl {
+    position: sticky;
+    top: 0px;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+    backdrop-filter: blur(7px);
+    background-color: rgba(0,0,0,0.2);
+}
+h2 {
+    padding: 3px;
+    margin: 0;
+}
+.cl {
+    height: -webkit-fill-available;
+    width: fit-content;
+    position: absolute;
+    overflow: hidden;
+    right: 0;
+    top: 0;
+}
+a.cl * {
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    position: relative;
+}
+.time {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 5vmin;
+    font-weight: bold;
+}
+#anim span {
+    color: green;
+}
+#anim.off span {
+    color: red;
+}
+.nxt {
+    font-size: 4vmin;
+    font-weight: bold;
+    position: fixed;
+    right: 2vmax;
+    top: 2vmax;
+}
+td.f {
+    background: rgba(255, 0, 0, 0.3);
+    transition: background 0s ease !important;
+}
+
+@keyframes cbg {
+    20% {background: rgba(255, 0, 0, 0.3);}
+}
+@media print {
+    * {
+        transition: none !important;
+        animation: none !important;
+        overflow: hidden !important;
+    }
+    *:not(html,head,body,table,table *) {
+        display: none;
+    }
+    table {
+    position: fixed;
+    height: 90vmin;
+    width: 90vmin;
+    padding: 0px;
+    margin: 0;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+}
+}
+</style>
+
+<div class="ldr"><div class="ldr_"></div></div>
+
+<div class="ico">
+<img src="./img/setting.svg">
+</div>
+<div class="time"><span class="min">00</span>:<span class="sec">00</span>:<span class="ms">000</span></div>
+<div class="nxt">Next: <span>1</span></div>
+<div class="menu_outer" style="display: none;">
+<div class="menu">
+    <ul>
+    <li class="ttl"><h2>MENU</h2><a href="#" class="cl"><img src="./img/icon_clear.svg"></a></li>
+    <li><a href="#" id="ref">Refresh</a></li>
+    <li><a href="#" id="prnt">Print</a></li>
+    <li><a href="#" id="anim">Animation: <span>ON</span></a></li>
+    <li><a href="#" id="">button</a></li>
+    <li><a href="#" id="">button</a></li>
+    <li><a href="#" id="">button</a></li>
+    <li><a href="#" id="">button</a></li>    
+    </ul>
+</div>
+</div>
+<script src="jquery.min.js"></script>
+
+<table cellspacing="0" cellpadding="2" border="1" id="tbl">
+
+</table>
+<!--<script src="./ripplet.min.js"></script>-->
+<script>
+    let tm=0;
+    let anim={off: ()=>{ if ($(".anim_manager").length==0) { let el=document.createElement("style");el.classList.add("anim_manager"); document.body.appendChild(el); }; $(".anim_manager").html(`* {
+animation: none !important; transition: none !important; }`); }, on: ()=>{ if ($(".anim_manager").length==0) { let el=document.createElement("style");el.classList.add("anim_manager"); document.body.appendChild(el); }; $(".anim_manager").html(" "); }};
+
+    function hideLdr(){$(".ldr").addClass("hid");}
+    function showLdr(){$(".ldr").removeClass("hid");}
+    $(document).ready(function(){hideLdr();});
+    let row=document.createElement("tr"),col=document.createElement("td"),row_;
+    for(let i=0;i<5;i++){row_=row.cloneNode();for(let j=0;j<5;j++){row_.appendChild(col.cloneNode());};$("#tbl").append(row_);}
+    let els=$("td");
+    Array.prototype.random=function(){const scope=this;let tmp_val,tmp=Math.floor((Math.random()*(scope.length))),tmp_el=scope[tmp];tmp_val=scope.splice(tmp,1);return tmp_val;};
+
+    function getRefresh(){var arr=[];for(i=1;i<=25;i++){arr.push(i);};for(i=0;i<25;i++){els[i].innerText=arr.random()[0];};
+var b=["red","#e1e100","blue","black","green"];function leak_(){$("tr").each(function(e,f){var tmp=[...b];els_=$(this).children();els_.each(function(g,h){tmp_val=tmp.random()[0];while(tmp_val==((this.parentElement.previousElementSibling)?this.parentElement.previousElementSibling.children[g].style.color:"")){if(g==4){break;leak_();return false;};tmp.push(tmp_val);tmp_val=tmp.random()[0];};h.style.color=tmp_val;});});}
+leak_();
+function check_this(){let res=0;$("tr").each(function(b,c){$(c.children).each(function(d,e){ if(e.parentElement.previousElementSibling&&e.parentElement.previousElementSibling.tagName=="TR"&&e.parentElement.previousElementSibling.children[d].style.color==e.style.color){res++;} });}); return res!=0;}
+$("tr")[2].children[2].classList.add("centre");
+while(check_this()){leak_();};}
+getRefresh();
+/*$("td").attr("data-ripplet","");ripplet.defaultOptions.opacity=0.4;
+ripplet.defaultOptions.className="rc";ripplet.defaultOptions.spreadingTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)";*/
+function toggleMe(){let el=$(".menu_outer");el.toggleClass("op");if(el.hasClass("op")){clearTimeout(tm);el.show();}else{tm=setTimeout(function(){el.hide();},300);};};
+$(".ico,.cl").click(toggleMe);
+minEl=$(".min"),secEl=$(".sec"),msEl=$(".ms");let tmt={now: 0,eld:0,fr:0,isR:0,str:function(){cancelAnimationFrame(tmt.fr);tmt.isR=1;tmt.now=Date.now();tmt.frFunc();},frFunc:function(){tmt.fr=requestAnimationFrame(tmt.frFunc);tmt.eld=Date.now()-tmt.now;let dtt=new Date(tmt.eld);msEl.text(String(dtt.getUTCMilliseconds()).padStart(3,"0"));secEl.text(dtt.getUTCSeconds().toString().padStart(2,"0"));minEl.text(dtt.getUTCMinutes().toString().padStart(2,"0"));},stp:function(){tmt.isR=0;cancelAnimationFrame(tmt.fr);},rsm:function(){tmt.isR=1;tmt.now=Date.now()-tmt.eld;tmt.frFunc();}}
+
+$(".menu li #ref").click(toggleMe);$(".menu_outer").click(function(e){e.currentTarget==e.target && toggleMe();});
+$("#ref").click(getRefresh);
+$("#anim").click(function(){if($("#anim").hasClass("off")){anim.on();$("#anim").removeClass("off");$("#anim span").text("ON");}else{anim.off();$("#anim").addClass("off");$("#anim span").text("OFF")};});
+$("#prnt").click(function(){print();});
+$("td").click(function(e){let sld=$(e.target);!tmt.isR&&tmt.str();if(e.target.innerText==$(".nxt span").text()){if(Number($(".nxt span").text())>=25){tmt.stp();return;};$(".nxt span").text(Number($(".nxt span").text())+1);}else{sld.addClass("f");setTimeout(function(){sld.removeClass("f");},1);}});
+</script>
+</body>
+</html>
